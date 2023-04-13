@@ -1,0 +1,994 @@
+{
+	"info": {
+		"_postman_id": "9a308bcb-f62a-40ae-a297-78c5d0aadb83",
+		"name": "GitHub_API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26874584"
+	},
+	"item": [
+		{
+			"name": "Issues",
+			"item": [
+				{
+					"name": "POST",
+					"item": [
+						{
+							"name": "Create_Issue",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"HTTP status: 201 crated\", function(){\r",
+											"    pm.response.to.have.status(201)\r",
+											"});\r",
+											"\r",
+											"\r",
+											"\r",
+											"pm.test(\"Response holds an array of issues\", function() {\r",
+											"  pm.expect(pm.response.headers.get('Content-Type'))\r",
+											"    .equals('application/json; charset=utf-8');\r",
+											"    const requestIssue = JSON.parse(pm.request.body);\r",
+											"    const responseIssue = pm.response.json();\r",
+											"    pm.expect(typeof(responseIssue)).equals(\"object\");\r",
+											"    pm.expect(Number.isInteger(responseIssue.id)).equals(true);\r",
+											"    pm.expect(requestIssue.title).equals(responseIssue.title);\r",
+											"    pm.expect(requestIssue.body).equals(responseIssue.body);\r",
+											"\r",
+											"    });\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "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",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "IvayloVutev",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"new issue\",\r\n    \"body\": \"I'm having a problem with this\"\r\n    \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://api.github.com/repos/IvayloVutev/Postman-Exercise/issues",
+									"protocol": "https",
+									"host": [
+										"api",
+										"github",
+										"com"
+									],
+									"path": [
+										"repos",
+										"IvayloVutev",
+										"Postman-Exercise",
+										"issues"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create_Comment_For_Isuue",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "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",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "IvayloVutev",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{    \r\n    \"body\": \"This is a comment\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://api.github.com/repos/IvayloVutev/Postman-Exercise/issues/1/comments",
+									"protocol": "https",
+									"host": [
+										"api",
+										"github",
+										"com"
+									],
+									"path": [
+										"repos",
+										"IvayloVutev",
+										"Postman-Exercise",
+										"issues",
+										"1",
+										"comments"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create_Issue_New_Title",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "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",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "IvayloVutev",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"New\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://api.github.com/repos/IvayloVutev/Postman-Exercise/issues",
+									"protocol": "https",
+									"host": [
+										"api",
+										"github",
+										"com"
+									],
+									"path": [
+										"repos",
+										"IvayloVutev",
+										"Postman-Exercise",
+										"issues"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "GET",
+					"item": [
+						{
+							"name": "Get_Single_Issue",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"HTTP status\", function(){\r",
+											"    pm.response.to.have.status(200)\r",
+											"});\r",
+											"\r",
+											"\r",
+											"\r",
+											"pm.test(\"Response holds an array of issues\", function() {\r",
+											"  pm.expect(pm.response.headers.get('Content-Type'))\r",
+											"    .equals('application/json; charset=utf-8');\r",
+											"  const json = pm.response.json();\r",
+											"  pm.expect(Array.isArray(json)).equals(true);\r",
+											"  for (let item of json) {\r",
+											"    pm.expect(typeof(item)).equals(\"object\");\r",
+											"    pm.expect(Number.isInteger(item.id)).equals(true);\r",
+											"    pm.expect(typeof(item.title)).equals(\"string\");\r",
+											"  }\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "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",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "IvayloVutev",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://api.github.com/repos/IvayloVutev/Postman-Exercise/issues",
+									"protocol": "https",
+									"host": [
+										"api",
+										"github",
+										"com"
+									],
+									"path": [
+										"repos",
+										"IvayloVutev",
+										"Postman-Exercise",
+										"issues"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get_Single_Issue_1",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"HTTP status\", function(){\r",
+											"    pm.response.to.have.status(200)\r",
+											"});\r",
+											"\r",
+											"\r",
+											"\r",
+											"pm.test(\"Response holds an array of issues\", function() {\r",
+											"  pm.expect(pm.response.headers.get('Content-Type'))\r",
+											"    .equals('application/json; charset=utf-8');\r",
+											"    const issue = pm.response.json();\r",
+											"    pm.expect(typeof(issue)).equals(\"object\");\r",
+											"    pm.expect(Number.isInteger(issue.id)).equals(true);\r",
+											"    pm.expect(typeof(issue.title)).equals(\"string\");\r",
+											"  \r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "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",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "IvayloVutev",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://api.github.com/repos/IvayloVutev/Postman-Exercise/issues/1",
+									"protocol": "https",
+									"host": [
+										"api",
+										"github",
+										"com"
+									],
+									"path": [
+										"repos",
+										"IvayloVutev",
+										"Postman-Exercise",
+										"issues",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get_Invalid_Issue",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"HTTP status code: 404 Not Found\", function(){\r",
+											"    pm.response.to.have.status(404)\r",
+											"});\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "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",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "IvayloVutev",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://api.github.com/repos/IvayloVutev/Postman-Exercise/issues/0",
+									"protocol": "https",
+									"host": [
+										"api",
+										"github",
+										"com"
+									],
+									"path": [
+										"repos",
+										"IvayloVutev",
+										"Postman-Exercise",
+										"issues",
+										"0"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get_Retrieve_All_Comment_For_Issue",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"HTTP status\", function(){\r",
+											"    pm.response.to.have.status(200)\r",
+											"});\r",
+											"\r",
+											"\r",
+											"\r",
+											"pm.test(\"Response holds an array of issues\", function() {\r",
+											"  pm.expect(pm.response.headers.get('Content-Type'))\r",
+											"    .equals('application/json; charset=utf-8');\r",
+											"  const json = pm.response.json();\r",
+											"  pm.expect(Array.isArray(json)).equals(true);\r",
+											"  for (let item of json) {\r",
+											"    pm.expect(typeof(item)).equals(\"object\");\r",
+											"    pm.expect(Number.isInteger(item.id)).equals(true);\r",
+											"    pm.expect(typeof(item.title)).equals(\"string\");\r",
+											"  }\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "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",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "IvayloVutev",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://api.github.com/repos/IvayloVutev/Postman-Exercise/issues/1/comments",
+									"protocol": "https",
+									"host": [
+										"api",
+										"github",
+										"com"
+									],
+									"path": [
+										"repos",
+										"IvayloVutev",
+										"Postman-Exercise",
+										"issues",
+										"1",
+										"comments"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get_Retrieve_All_IssueLabels",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"HTTP status\", function(){\r",
+											"    pm.response.to.have.status(200)\r",
+											"});\r",
+											"\r",
+											"\r",
+											"\r",
+											"pm.test(\"Response holds an array of issues\", function() {\r",
+											"  pm.expect(pm.response.headers.get('Content-Type'))\r",
+											"    .equals('application/json; charset=utf-8');\r",
+											"  const json = pm.response.json();\r",
+											"  pm.expect(Array.isArray(json)).equals(true);\r",
+											"  for (let item of json) {\r",
+											"    pm.expect(typeof(item)).equals(\"object\");\r",
+											"    pm.expect(Number.isInteger(item.id)).equals(true);\r",
+											"    pm.expect(typeof(item.title)).equals(\"string\");\r",
+											"  }\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "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",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "IvayloVutev",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://api.github.com/repos/IvayloVutev/Postman-Exercise/issues/9/labels",
+									"protocol": "https",
+									"host": [
+										"api",
+										"github",
+										"com"
+									],
+									"path": [
+										"repos",
+										"IvayloVutev",
+										"Postman-Exercise",
+										"issues",
+										"9",
+										"labels"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get_All_Issues",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"HTTP status\", function(){\r",
+											"    pm.response.to.have.status(200)\r",
+											"});\r",
+											"\r",
+											"\r",
+											"\r",
+											"pm.test(\"Response holds an array of issues\", function() {\r",
+											"  pm.expect(pm.response.headers.get('Content-Type'))\r",
+											"    .equals('application/json; charset=utf-8');\r",
+											"  const json = pm.response.json();\r",
+											"  pm.expect(Array.isArray(json)).equals(true);\r",
+											"  for (let item of json) {\r",
+											"    pm.expect(typeof(item)).equals(\"object\");\r",
+											"    pm.expect(Number.isInteger(item.id)).equals(true);\r",
+											"    pm.expect(typeof(item.title)).equals(\"string\");\r",
+											"  }\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "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",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "IvayloVutev",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://api.github.com/repos/IvayloVutev/Postman-Exercise/issues",
+									"protocol": "https",
+									"host": [
+										"api",
+										"github",
+										"com"
+									],
+									"path": [
+										"repos",
+										"IvayloVutev",
+										"Postman-Exercise",
+										"issues"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get_Labels",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"HTTP status\", function(){\r",
+											"    pm.response.to.have.status(200)\r",
+											"});\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "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",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "IvayloVutev",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"issue from POSTMAN\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://api.github.com/repos/IvayloVutev/Postman-Exercise/issues/1/labels",
+									"protocol": "https",
+									"host": [
+										"api",
+										"github",
+										"com"
+									],
+									"path": [
+										"repos",
+										"IvayloVutev",
+										"Postman-Exercise",
+										"issues",
+										"1",
+										"labels"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Repos",
+			"item": [
+				{
+					"name": "GET",
+					"item": [
+						{
+							"name": "Get_All_Repos",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://api.github.com/repos/IvayloVutev/repos\n\n",
+									"protocol": "https",
+									"host": [
+										"api",
+										"github",
+										"com"
+									],
+									"path": [
+										"repos",
+										"IvayloVutev",
+										"repos\n\n"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Create_Get_Repos",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"HTTP status\", function(){\r",
+									"    pm.response.to.have.status(200)\r",
+									"});\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "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",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "IvayloVutev",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.github.com/users/IvayloVutev/repos",
+							"protocol": "https",
+							"host": [
+								"api",
+								"github",
+								"com"
+							],
+							"path": [
+								"users",
+								"IvayloVutev",
+								"repos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get_Single_Repo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "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",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "IvayloVutev",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"issue from POSTMAN\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.github.com/repos/IvayloVutev/Postman-Exercise",
+							"protocol": "https",
+							"host": [
+								"api",
+								"github",
+								"com"
+							],
+							"path": [
+								"repos",
+								"IvayloVutev",
+								"Postman-Exercise"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PATCH",
+			"item": [
+				{
+					"name": "PATCH_Edit_Existing_Issue",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"HTTP status: 200 crated\", function(){\r",
+									"    pm.response.to.have.status(200)\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response holds an array of issues\", function() {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type'))\r",
+									"    .equals('application/json; charset=utf-8');\r",
+									"    const requestIssue = JSON.parse(pm.request.body);\r",
+									"    const responseIssue = pm.response.json();\r",
+									"    pm.expect(typeof(responseIssue)).equals(\"object\");\r",
+									"    pm.expect(Number.isInteger(responseIssue.id)).equals(true);\r",
+									"    pm.expect(requestIssue.title).equals(responseIssue.title); \r",
+									"    });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "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",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "IvayloVutev",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Edited bug (new title)\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.github.com/repos/IvayloVutev/Postman-Exercise/issues/1",
+							"protocol": "https",
+							"host": [
+								"api",
+								"github",
+								"com"
+							],
+							"path": [
+								"repos",
+								"IvayloVutev",
+								"Postman-Exercise",
+								"issues",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PATCH_Close_Existing_Issue",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "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",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "IvayloVutev",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Edited bug\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.github.com/repos/IvayloVutev/Postman-Exercise/issues/1",
+							"protocol": "https",
+							"host": [
+								"api",
+								"github",
+								"com"
+							],
+							"path": [
+								"repos",
+								"IvayloVutev",
+								"Postman-Exercise",
+								"issues",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "DELETE",
+			"item": [
+				{
+					"name": "Delete_Existing_Comment",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "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",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "IvayloVutev",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://api.github.com/repos/IvayloVutev/Postman-Exercise/issues/comments/1506919917",
+							"protocol": "https",
+							"host": [
+								"api",
+								"github",
+								"com"
+							],
+							"path": [
+								"repos",
+								"IvayloVutev",
+								"Postman-Exercise",
+								"issues",
+								"comments",
+								"1506919917"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
